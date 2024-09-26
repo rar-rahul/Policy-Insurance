@@ -5,7 +5,7 @@ const initialState = {
     token:'',
     isLoggedIn:false,
     currentUser: null, 
-    loginError:null,
+    loginError:false,
     purchasedPolicy:[],
     claimRequest:[],
     formState:''
@@ -57,21 +57,20 @@ const UserSlice = createSlice({
           if(user){
             state.currentUser = user;
             state.isLoggedIn = true;
-            state.loginError = null
+            state.loginError = false
           }else{
             state.isLoggedIn = false;
-            state.loginError = "Invalid Username or password"
+            state.loginError = true
           }
         },
         logout:(state) => {
             state.currentUser = null;
             state.isLoggedIn = false;
         },
-        payment:(state,action) => {
-          const {policyId,userEmail} = action.payload;
-          const policyUser =  state.purchasedPolicy.find((policy) => policy.policyNumber === Number(policyId) && policy.userEmail === userEmail)
-          console.log(policyUser)
+        resetErrorState:(state) => {
+          state.loginError = false
         }
+       
     },
     extraReducers:(builder) => {
         builder
@@ -98,6 +97,6 @@ const UserSlice = createSlice({
     }
 })
 
-export const{signUp,login,logout,payment} = UserSlice.actions
+export const{signUp,login,logout,resetErrorState} = UserSlice.actions
 
 export default UserSlice.reducer

@@ -4,7 +4,6 @@ const ComparePolicy = () => {
     const policyData = useSelector(state => state.policy.policyData);
     const selectedPolicy = useSelector(state => state.policy.selectedPolicies);
 
-    console.log(selectedPolicy)
     if (!policyData || !selectedPolicy) {
         return <div>Loading...</div>;
       }

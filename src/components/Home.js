@@ -72,8 +72,8 @@ const Home = () => {
       <section>
         <h2 className="text-center mb-4">Categories of Policies</h2>
         <div className="row">
-          {policyCategory.map((type) => (
-            <div className="col-md-3 mb-4">
+          {policyCategory.map((type,index) => (
+            <div className="col-md-3 mb-4" key={index}>
               <div className="card text-center">
                 <div className="card-body">
                   <h5 className="card-title">{type}</h5>

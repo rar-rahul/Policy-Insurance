@@ -29,7 +29,7 @@ const PolicyCard = ({policy}) => {
     
   }
   return (
-      <div key={policy.policy_id} className="col-md-4 mb-4">
+      <div className="col-md-4 mb-4">
         <div className="card h-100">
         <div className="card-body">
           {/* Policy Type */}

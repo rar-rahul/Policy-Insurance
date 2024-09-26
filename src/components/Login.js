@@ -1,16 +1,20 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector,useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import {login} from '../reducer/userSlice'
+import {login,resetErrorState} from '../reducer/userSlice'
 import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const users = useSelector((state => state.user));
   const {register,handleSubmit,formState: { errors }} = useForm();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [isError,setIsError] = useState();
 
   const handleLogin = (data) => { 
+    setIsSubmitting(true);
     dispatch(login(data))
+    setIsSubmitting(false);
   }
   
   useEffect(() => {
@@ -20,11 +24,15 @@ const Login = () => {
       },1000)
     }
   },[users.isLoggedIn])
+
+  useEffect(() => {
+    dispatch(resetErrorState())
+  },[])
     return (
         <div className="container mt-5 py-5">
           <h2 className="text-center mb-4">Login</h2>
          <h3>{users.loginError && ( 
-          <h3 className='text-center'>{users.loginError}</h3>
+          <h3 className='text-center'>Username or password not valid</h3>
          )}</h3>
           <form className="col-md-6 mx-auto" onSubmit={handleSubmit(handleLogin)}>
           <div className="form-group mb-3">
@@ -59,7 +67,7 @@ const Login = () => {
             {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
           </div>
             <button type="submit" className="btn btn-primary w-100">
-              Login
+            {isSubmitting ? 'Signing In...' : 'Login'}
             </button>
           </form>
         </div>

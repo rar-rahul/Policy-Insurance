@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 const ClaimCard = ({claim}) => {
     const store = useSelector(state => state.policy)
    const policy = store.policyData?.find((policy) => policy.policy_id === Number(claim.policyId))
-   console.log(policy)
   return (
     <div className="col-md-6">
               <Card className="mb-3 shadow-sm">

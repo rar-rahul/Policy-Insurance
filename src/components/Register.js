@@ -30,7 +30,7 @@ const Register = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 py-5">
       <div className="col-md-6 mx-auto">
         <h2 className="text-center mb-4">Register</h2>
         {successMessage && <div className="alert alert-success text-center">{successMessage}</div>}
