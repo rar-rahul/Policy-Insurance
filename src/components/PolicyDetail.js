@@ -28,8 +28,6 @@ function PolicyDetail() {
                   <li key={index}>{benefit}</li>
                 ))}
               </ul>
-
-              <button className="btn btn-primary">Buy Now</button>
             </div>
           </div>
         </div>

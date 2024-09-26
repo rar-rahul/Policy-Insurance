@@ -13,17 +13,19 @@ const PurchaseForm = () => {
     const navigate = useNavigate()
     //handle purchase handler
     const handlePurchasePolicy = (data) => {
-        dispatch(purchasePolicy(data))
-        reset()
-        if(formState === 'Success'){
-            navigate('/payment',{state:{premium:policyPremium,policy:policy}})
-        }
+        // dispatch(purchasePolicy(data))
+        // reset()
+   setTimeout(() => {
+   navigate('/payment',{state:{premium:policyPremium,policy:policy,formData:data}})
+
+        },2000)
+
     }
 //    useEffect(() => { 
 //     if(formState === 'Success'){
 //         navigate('/payment',{state:{premium:policyPremium,policy:policy}})
 //     }
-//    },[])
+//    },[formState])
   
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">

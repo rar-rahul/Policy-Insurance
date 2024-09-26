@@ -83,14 +83,20 @@ const Header = () => {
           {user.isLoggedIn ? (
            
       <ul className="navbar-nav mr-auto">
-          <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <li className="nav-item dropdown">
+        <button className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {user.currentUser.name}
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        </button>
+        <div className="dropdown-menu mr-5" aria-labelledby="navbarDropdown">
         <li>
                   <Link to="/profile" className="dropdown-item">
                     My Profile
+                  </Link>
+                </li>
+                
+                <li>
+                  <Link to={'/claim-history'} className="dropdown-item">
+                    Claim History
                   </Link>
                 </li>
                 <li>
@@ -98,12 +104,9 @@ const Header = () => {
                     Logout
                   </Link>
                 </li>
-                <li>
-                  <Link to={'/claim-history'} className="dropdown-item">
-                    Claim History
-                  </Link>
-                </li>
         </div>
+
+        
       </li>
         </ul>
           ) : (

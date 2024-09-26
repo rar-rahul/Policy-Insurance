@@ -7,8 +7,6 @@ const Home = () => {
   const policy = useSelector((state) => state.policy);
   const policyCategory = policy.policyData.map((policy) => policy.claim_type);
   const dispatch = useDispatch();
-
-
   useEffect(() => {
     //dispatch(fetchPolicyData(data))
     //dispatching thunk function to load data asyncronusly

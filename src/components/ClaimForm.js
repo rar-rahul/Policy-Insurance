@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import { useSelector,useDispatch } from 'react-redux';
 import { fileClaim } from '../reducer/userSlice';
 const ClaimForm = () => {
@@ -9,10 +9,15 @@ const ClaimForm = () => {
   const location = useLocation();
   const {policyId,userEmail} = location.state || {}
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   
   const handleClaimSubmit = (data) => {
     dispatch(fileClaim(data))
-    reset();  
+    reset();
+    setTimeout(() => { 
+        navigate('/claim-history')
+    },2000)
+
   };
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
