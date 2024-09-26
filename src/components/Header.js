@@ -1,37 +1,35 @@
 import React, { useState } from 'react';
-import { useSelector,useDispatch } from 'react-redux';
-import {logout} from '../reducer/userSlice'
-import{filterData,clearFilter} from '../reducer/policySlice'
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../reducer/userSlice';
+import { filterData, clearFilter } from '../reducer/policySlice';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
-  const user = useSelector((state) => state.user)
-  const policy = useSelector(state => state.policy);
+  const user = useSelector((state) => state.user);
+  const policy = useSelector((state) => state.policy);
 
-  const dispatch = useDispatch()
-  const[showDropdown,setShowDropdown] = useState(false)
-  const [filterkey,SetFilterKey] = useState('');
+  const dispatch = useDispatch();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [filterkey, SetFilterKey] = useState('');
 
-  
   const handleLogout = () => {
-    dispatch(logout())
+    dispatch(logout());
   };
 
   const handleDropdown = () => {
-    setShowDropdown(true)
-    console.log(showDropdown)
-  }
+    setShowDropdown(true);
+    console.log(showDropdown);
+  };
 
   const handleChangeFilter = (e) => {
-    const value = e.target.value.trim();;
-    SetFilterKey(value)
-    if(value.length > 0){
-      dispatch(filterData(value))
-    }else{
-      dispatch(clearFilter())
+    const value = e.target.value.trim();
+    SetFilterKey(value);
+    if (value.length > 0) {
+      dispatch(filterData(value));
+    } else {
+      dispatch(clearFilter());
     }
-    
-  }
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark container-fluid px-4 px-lg-5">
@@ -52,18 +50,17 @@ const Header = () => {
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
-          
           <li className="nav-item active">
             <Link to={'/'} className="nav-link">
               Home <span className="sr-only"></span>
             </Link>
           </li>
           {policy.selectedPolicies.length > 1 && (
-          <li className="nav-item active">
-            <Link to={'/compare'} className="nav-link">
-              Compare <span className="sr-only"></span>
-            </Link>
-          </li>
+            <li className="nav-item active">
+              <Link to={'/compare'} className="nav-link">
+                Compare <span className="sr-only"></span>
+              </Link>
+            </li>
           )}
         </ul>
 
@@ -76,39 +73,46 @@ const Header = () => {
             aria-label="Search"
             onChange={handleChangeFilter}
           />
-         
         </form>
 
         <div className="d-flex align-items-center ml-auto">
           {user.isLoggedIn ? (
-           
-      <ul className="navbar-nav mr-auto">
-          <li className="nav-item dropdown">
-        <button className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {user.currentUser.name}
-        </button>
-        <div className="dropdown-menu mr-5" aria-labelledby="navbarDropdown">
-        <li>
-                  <Link to="/profile" className="dropdown-item">
-                    My Profile
-                  </Link>
-                </li>
-                
-                <li>
-                  <Link to={'/claim-history'} className="dropdown-item">
-                    Claim History
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" onClick={handleLogout}>
-                    Logout
-                  </Link>
-                </li>
-        </div>
+            <ul className="navbar-nav mr-auto">
+              <li className="nav-item dropdown">
+                <button
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  {user.currentUser.name}
+                </button>
+                <div
+                  className="dropdown-menu mr-5"
+                  aria-labelledby="navbarDropdown"
+                >
+                  <li>
+                    <Link to="/profile" className="dropdown-item">
+                      My Profile
+                    </Link>
+                  </li>
 
-        
-      </li>
-        </ul>
+                  <li>
+                    <Link to={'/claim-history'} className="dropdown-item">
+                      Claim History
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" onClick={handleLogout}>
+                      Logout
+                    </Link>
+                  </li>
+                </div>
+              </li>
+            </ul>
           ) : (
             <div className="d-flex mt-3 mt-lg-0 ml-auto">
               <Link to="/login" className="btn btn-outline-light me-2">
