@@ -11,17 +11,25 @@ const Register = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
 
   const handleSignup = (data) => {
     setIsSubmitting(true);
-    let genToken = 'token' + Math.random().toString(24).substring(2) + Date.now().toString(24);
+    let genToken =
+      'token' +
+      Math.random().toString(24).substring(2) +
+      Date.now().toString(24);
     let updatedUser = { ...data, token: genToken };
     dispatch(signUp(updatedUser));
-    
+
     setIsSubmitting(false);
     setSuccessMessage('You have registered successfully');
-    
+
     setTimeout(() => {
       setSuccessMessage('');
       reset(); // Clear the form after successful submission
@@ -33,7 +41,11 @@ const Register = () => {
     <div className="container mt-5 py-5">
       <div className="col-md-6 mx-auto">
         <h2 className="text-center mb-4">Register</h2>
-        {successMessage && <div className="alert alert-success text-center">{successMessage}</div>}
+        {successMessage && (
+          <div className="alert alert-success text-center">
+            {successMessage}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit(handleSignup)} noValidate>
           <div className="form-group mb-3">
@@ -45,7 +57,9 @@ const Register = () => {
               placeholder="Enter your name"
               {...register('name', { required: 'Name is required' })}
             />
-            {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
+            {errors.name && (
+              <div className="invalid-feedback">{errors.name.message}</div>
+            )}
           </div>
 
           <div className="form-group mb-3">
@@ -63,7 +77,9 @@ const Register = () => {
                 },
               })}
             />
-            {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
+            {errors.email && (
+              <div className="invalid-feedback">{errors.email.message}</div>
+            )}
           </div>
 
           <div className="form-group mb-3">
@@ -81,10 +97,16 @@ const Register = () => {
                 },
               })}
             />
-            {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
+            {errors.password && (
+              <div className="invalid-feedback">{errors.password.message}</div>
+            )}
           </div>
 
-          <button type="submit" className="btn btn-primary w-100" disabled={isSubmitting}>
+          <button
+            type="submit"
+            className="btn btn-primary w-100"
+            disabled={isSubmitting}
+          >
             {isSubmitting ? 'Signing up...' : 'Sign Up'}
           </button>
         </form>

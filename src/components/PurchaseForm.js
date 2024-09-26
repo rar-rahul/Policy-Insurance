@@ -1,40 +1,52 @@
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useLocation,useNavigate } from "react-router-dom";
-import { purchasePolicy } from "../reducer/userSlice";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { purchasePolicy } from '../reducer/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 const PurchaseForm = () => {
-    const{formState,currentUser} = useSelector(state => state.user)
-    const {register,handleSubmit,formState: { errors },reset } = useForm();
-    const location = useLocation();
-    const {policy} = location.state || {}
-    const policyPremium = policy.details.premium
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    //handle purchase handler
-    const handlePurchasePolicy = (data) => {
-        // dispatch(purchasePolicy(data))
-        // reset()
-   setTimeout(() => {
-   navigate('/payment',{state:{premium:policyPremium,policy:policy,formData:data}})
+  const { formState, currentUser } = useSelector((state) => state.user);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
+  const location = useLocation();
+  const { policy } = location.state || {};
+  const policyPremium = policy.details.premium;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  //handle purchase handler
+  const handlePurchasePolicy = (data) => {
+    // dispatch(purchasePolicy(data))
+    // reset()
+    setTimeout(() => {
+      navigate('/payment', {
+        state: { premium: policyPremium, policy: policy, formData: data },
+      });
+    }, 2000);
+  };
+  //    useEffect(() => {
+  //     if(formState === 'Success'){
+  //         navigate('/payment',{state:{premium:policyPremium,policy:policy}})
+  //     }
+  //    },[formState])
 
-        },2000)
-
-    }
-//    useEffect(() => { 
-//     if(formState === 'Success'){
-//         navigate('/payment',{state:{premium:policyPremium,policy:policy}})
-//     }
-//    },[formState])
-  
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
-      <div className="card shadow-lg p-4 bg-white rounded-lg w-100" style={{ maxWidth: "500px" }}>
+      <div
+        className="card shadow-lg p-4 bg-white rounded-lg w-100"
+        style={{ maxWidth: '500px' }}
+      >
         <h2 className="text-center mb-4">Purchase Policy Form</h2>
         <form onSubmit={handleSubmit(handlePurchasePolicy)}>
           {/* Policy Number */}
-          <input type="hidden" {...register('userEmail')} value={currentUser.email}/>
-          <input type="hidden" {...register('paymentStatus')} value="unpaid"/>
+          <input
+            type="hidden"
+            {...register('userEmail')}
+            value={currentUser.email}
+          />
+          <input type="hidden" {...register('paymentStatus')} value="unpaid" />
 
           <div className="mb-3">
             <label htmlFor="policyNumber" className="form-label">
@@ -59,11 +71,14 @@ const PurchaseForm = () => {
               type="text"
               className="form-control"
               id="policyHolderName"
-              {...register("policyHolderName", { required: "Policy Holder Name is required" })}
-            placeholder="Please Enter Full Name"
-           />
-     {errors.policyHolderName && <p className="text-danger">{errors.policyHolderName.message}</p>}
-
+              {...register('policyHolderName', {
+                required: 'Policy Holder Name is required',
+              })}
+              placeholder="Please Enter Full Name"
+            />
+            {errors.policyHolderName && (
+              <p className="text-danger">{errors.policyHolderName.message}</p>
+            )}
           </div>
           {/* Policy Holder Age */}
           <div className="mb-3">
@@ -125,7 +140,7 @@ const PurchaseForm = () => {
 
           {/* Submit Button */}
           <button type="submit" className="btn btn-success w-100">
-           {formState === 'Loading' ? 'Processing' : 'Submit Purchase'}
+            {formState === 'Loading' ? 'Processing' : 'Submit Purchase'}
           </button>
         </form>
       </div>
