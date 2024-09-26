@@ -20,7 +20,6 @@ const Profile = () => {
   return (
     <div className="container my-5">
       <div className="row">
-        {/* User Information Section */}
         <div className="col-md-4">
           <Card>
             <Card.Img
