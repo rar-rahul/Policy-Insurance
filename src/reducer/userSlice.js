@@ -60,7 +60,7 @@ const UserSlice = createSlice({
             state.loginError = null
           }else{
             state.isLoggedIn = false;
-            state.loginError = "Invalid Username and password"
+            state.loginError = "Invalid Username or password"
           }
         },
         logout:(state) => {

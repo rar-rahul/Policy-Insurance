@@ -17,8 +17,8 @@ const Register = () => {
     setIsSubmitting(true);
     let genToken = 'token' + Math.random().toString(24).substring(2) + Date.now().toString(24);
     let updatedUser = { ...data, token: genToken };
-
     dispatch(signUp(updatedUser));
+    
     setIsSubmitting(false);
     setSuccessMessage('You have registered successfully');
     

@@ -21,7 +21,7 @@ const Profile = () => {
         {/* User Information Section */}
         <div className="col-md-4">
           <Card>
-            <Card.Img variant="top" src="https://via.placeholder.com/150" />
+            <Card.Img variant="top" src="https://randomuser.me/api/portraits/men/1.jpg" />
             <Card.Body>
               <Card.Title>Name: {user?.currentUser?.name}</Card.Title>
               <Card.Text>

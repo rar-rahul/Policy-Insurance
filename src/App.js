@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Route,Routes, BrowserRouter as Router} from 'react-router-dom'
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { Store } from './store';
 import Header from './components/Header';
 import Home from './components/Home';
@@ -15,6 +15,7 @@ import PurchaseForm from './components/PurchaseForm';
 import PaymentForm from './components/PaymentForm';
 import ClaimForm from './components/ClaimForm';
 import ClaimHistory from './components/ClaimHistory';
+import Footer from './components/Footer';
 function App() {
  
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route exact path='/claim' element={<ClaimForm/>}/>
           <Route exact path='/claim-history' element={<ClaimHistory/>}/>
         </Routes>
+        <Footer/>
       </Router>
       </Provider>
     </div>
