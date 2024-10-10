@@ -9,6 +9,8 @@ const Register = () => {
   const dispatch = useDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
   const navigate = useNavigate();
 
   const {
@@ -18,23 +20,38 @@ const Register = () => {
     reset,
   } = useForm();
 
-  const handleSignup = (data) => {
+  const handleSignup = async (data) => {
     setIsSubmitting(true);
-    let genToken =
-      'token' +
-      Math.random().toString(24).substring(2) +
-      Date.now().toString(24);
-    let updatedUser = { ...data, token: genToken };
-    dispatch(signUp(updatedUser));
 
-    setIsSubmitting(false);
-    setSuccessMessage('You have registered successfully');
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/register',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          // 'Authorization': `${token}`
+        },
+        body:JSON.stringify(data)
+      })
+      const res = await response.json()
 
-    setTimeout(() => {
-      setSuccessMessage('');
-      reset(); // Clear the form after successful submission
-      navigate('/login');
-    }, 2000);
+      console.log(res)
+
+      if(res.status === 'Success'){
+        setSuccessMessage('You have registered successfully');
+        setTimeout(() => {
+        setSuccessMessage('');
+        reset(); // Clear the form after successful submission
+        navigate('/login');
+      }, 2000);
+      }else{
+        setErrorMessage(res.message)
+      }
+    } catch (error) {
+      setErrorMessage("something wrong on server")
+    }finally{
+      setIsSubmitting(false);
+    }
+    
   };
 
   return (
@@ -44,6 +61,12 @@ const Register = () => {
         {successMessage && (
           <div className="alert alert-success text-center">
             {successMessage}
+          </div>
+        )}
+
+     {errorMessage && (
+          <div className="alert alert-danger text-center">
+            {errorMessage}
           </div>
         )}
 
@@ -79,6 +102,23 @@ const Register = () => {
             />
             {errors.email && (
               <div className="invalid-feedback">{errors.email.message}</div>
+            )}
+          </div>
+
+          <div className="form-group mb-3">
+            <label htmlFor="email">Mobile</label>
+            <input
+              type="text"
+              className={`form-control ${errors.mobile ? 'is-invalid' : ''}`}
+              id="mobile"
+              placeholder="Enter your Mobile"
+              {...register('mobile', {
+                required: 'mobile is required',
+               
+              })}
+            />
+            {errors.email && (
+              <div className="invalid-feedback">{errors.mobile.message}</div>
             )}
           </div>
 

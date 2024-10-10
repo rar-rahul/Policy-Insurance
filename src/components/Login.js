@@ -13,11 +13,27 @@ const Login = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isError, setIsError] = useState();
-
-  const handleLogin = (data) => {
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const handleLogin = async (data) => {
     setIsSubmitting(true);
-    dispatch(login(data));
+
+    const response = await fetch('http://127.0.0.1:8000/api/login',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        // 'Authorization': `${token}`
+      },
+      body:JSON.stringify(data)
+    })
+    const res = await response.json()
+
+    if(res.status === 'Success'){
+      dispatch(login(res));
+      setSuccessMessage("Successfully LoggedIn")
+    }else{
+      setErrorMessage(res.message)
+    }
     setIsSubmitting(false);
   };
 
@@ -35,11 +51,17 @@ const Login = () => {
   return (
     <div className="container mt-5 py-5">
       <h2 className="text-center mb-4">Login</h2>
-      <h3>
-        {users.loginError && (
-          <h3 className="text-center">Username or password not valid</h3>
+      {successMessage && (
+          <div className="alert alert-success text-center">
+            {successMessage}
+          </div>
         )}
-      </h3>
+
+     {errorMessage && (
+          <div className="alert alert-danger text-center">
+            {errorMessage}
+          </div>
+        )}
       <form className="col-md-6 mx-auto" onSubmit={handleSubmit(handleLogin)}>
         <div className="form-group mb-3">
           <label htmlFor="email">Email</label>

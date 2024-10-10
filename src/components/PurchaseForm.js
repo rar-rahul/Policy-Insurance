@@ -17,21 +17,24 @@ const PurchaseForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   //handle purchase handler
-  const handlePurchasePolicy = (data) => {
-    // dispatch(purchasePolicy(data))
-    // reset()
-    setTimeout(() => {
-      navigate('/payment', {
-        state: { premium: policyPremium, policy: policy, formData: data },
-      });
-    }, 2000);
-  };
-  //    useEffect(() => {
-  //     if(formState === 'Success'){
-  //         navigate('/payment',{state:{premium:policyPremium,policy:policy}})
-  //     }
-  //    },[formState])
+  const handlePurchasePolicy = async (data) => {
 
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/purchasePolicy',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          // 'Authorization': `${token}`
+        },
+        body:JSON.stringify(data)
+      })
+      const res = await response.json()
+    } catch (error) {
+      
+    }
+  
+  };
+  
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
       <div
@@ -43,7 +46,12 @@ const PurchaseForm = () => {
           {/* Policy Number */}
           <input
             type="hidden"
-            {...register('userEmail')}
+            {...register('user')}
+            value={currentUser._id}
+          />
+           <input
+            type="hidden"
+            {...register('usermail')}
             value={currentUser.email}
           />
           <input type="hidden" {...register('paymentStatus')} value="unpaid" />
@@ -71,7 +79,7 @@ const PurchaseForm = () => {
               type="text"
               className="form-control"
               id="policyHolderName"
-              {...register('policyHolderName', {
+              {...register('policyHolder', {
                 required: 'Policy Holder Name is required',
               })}
               placeholder="Please Enter Full Name"
@@ -90,7 +98,7 @@ const PurchaseForm = () => {
               className="form-control"
               id="policyHolderAge"
               name="policyHolderAge"
-              {...register('policyHolderAge')}
+              {...register('policyAge')}
               placeholder="Please Enter age"
             />
           </div>
@@ -105,7 +113,7 @@ const PurchaseForm = () => {
               className="form-control"
               id="coverageAmount"
               value={policy.coverage_amount}
-              {...register('coverageAmount')}
+              {...register('covrageAmount')}
               required
             />
           </div>
@@ -122,20 +130,6 @@ const PurchaseForm = () => {
               {...register('purchaseDate')}
               required
             />
-          </div>
-
-          {/* Terms & Conditions */}
-          <div className="form-check mb-3">
-            <input
-              type="checkbox"
-              className="form-check-input"
-              id="termsAccepted"
-              {...register('termsAccepted')}
-              required
-            />
-            <label className="form-check-label" htmlFor="termsAccepted">
-              I accept the terms and conditions
-            </label>
           </div>
 
           {/* Submit Button */}

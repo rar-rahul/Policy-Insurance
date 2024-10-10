@@ -52,18 +52,12 @@ const UserSlice = createSlice({
       };
     },
     login: (state, action) => {
-      const { email, password } = action.payload;
-      const user = state.users.find(
-        (user) => user.email === email && user.password === password
-      );
-      if (user) {
-        state.currentUser = user;
+        const data = action.payload
+        state.currentUser = data.user;
         state.isLoggedIn = true;
         state.loginError = false;
-      } else {
-        state.isLoggedIn = false;
-        state.loginError = true;
-      }
+        state.token = data.token
+     
     },
     logout: (state) => {
       state.currentUser = null;
