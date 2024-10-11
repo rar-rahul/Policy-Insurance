@@ -17,7 +17,7 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const handleLogin = async (data) => {
     setIsSubmitting(true);
-
+    setErrorMessage('')
     const response = await fetch('http://127.0.0.1:8000/api/login',{
       method:'POST',
       headers:{
@@ -49,7 +49,11 @@ const Login = () => {
     dispatch(resetErrorState());
   }, []);
   return (
-    <div className="container mt-5 py-5">
+    <div className="container d-flex justify-content-center align-items-center vh-100">
+    <div
+      className="card shadow-lg p-4 bg-white rounded-lg w-100"
+      style={{ maxWidth: '500px' }}
+    >
       <h2 className="text-center mb-4">Login</h2>
       {successMessage && (
           <div className="alert alert-success text-center">
@@ -62,7 +66,7 @@ const Login = () => {
             {errorMessage}
           </div>
         )}
-      <form className="col-md-6 mx-auto" onSubmit={handleSubmit(handleLogin)}>
+      <form className="col-md-12 mx-auto" onSubmit={handleSubmit(handleLogin)}>
         <div className="form-group mb-3">
           <label htmlFor="email">Email</label>
           <input
@@ -101,6 +105,7 @@ const Login = () => {
           {isSubmitting ? 'Signing In...' : 'Login'}
         </button>
       </form>
+    </div>
     </div>
   );
 };

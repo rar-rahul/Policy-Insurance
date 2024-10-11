@@ -95,7 +95,7 @@ const Header = () => {
                   aria-labelledby="navbarDropdown"
                 >
 
-{user.currentUser?.role === 'user' && (
+{user && user.currentUser?.role === 'user' && (
           <>
           
                   <li>
@@ -112,7 +112,7 @@ const Header = () => {
                   </>
 
 )}
-              {user.currentUser?.role === 'admin' && (
+              {user && user.currentUser?.role === 'admin' && (
                 <>
                  <li>
                     <Link to="/viewclaims" className="dropdown-item">
