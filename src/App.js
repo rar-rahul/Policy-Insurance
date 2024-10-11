@@ -15,6 +15,8 @@ import PurchaseForm from './components/PurchaseForm';
 import PaymentForm from './components/PaymentForm';
 import ClaimForm from './components/ClaimForm';
 import ClaimHistory from './components/ClaimHistory';
+import AdminClaimList from './components/AdminClaimList'
+import AdminPolicyList from './components/AdminPolicyList'
 import Footer from './components/Footer';
 function App() {
   return (
@@ -33,6 +35,9 @@ function App() {
             <Route exact path="/payment" element={<PaymentForm />} />
             <Route exact path="/claim" element={<ClaimForm />} />
             <Route exact path="/claim-history" element={<ClaimHistory />} />
+            <Route exact path="/viewclaims" element={<AdminClaimList />} />
+            <Route exact path="/viewpolicies" element={<AdminPolicyList />} />
+
           </Routes>
           <Footer />
         </Router>

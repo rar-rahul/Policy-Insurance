@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { signUp } from '../reducer/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Register = () => {
-  const dispatch = useDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -28,7 +25,6 @@ const Register = () => {
         method:'POST',
         headers:{
           'Content-Type':'application/json',
-          // 'Authorization': `${token}`
         },
         body:JSON.stringify(data)
       })
@@ -36,10 +32,9 @@ const Register = () => {
 
       console.log(res)
 
-      if(res.status === 'Success'){
-        setSuccessMessage('You have registered successfully');
+      if(res.status === 'success'){
         setTimeout(() => {
-        setSuccessMessage('');
+        setSuccessMessage(res.message);
         reset(); // Clear the form after successful submission
         navigate('/login');
       }, 2000);

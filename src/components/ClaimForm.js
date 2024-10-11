@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fileClaim } from '../reducer/userSlice';
 const ClaimForm = () => {
-  const { claimRequest } = useSelector((state) => state.user);
+  const { currentUser,isLoggedIn,token } = useSelector((state) => state.user);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const {
     register,
     handleSubmit,
@@ -12,17 +14,39 @@ const ClaimForm = () => {
     reset,
   } = useForm();
   const location = useLocation();
-  const { policyId, userEmail } = location.state || {};
-  const dispatch = useDispatch();
+  const { policyId, userId } = location.state || {};
   const navigate = useNavigate();
 
-  const handleClaimSubmit = (data) => {
-    dispatch(fileClaim(data));
-    reset();
-    setTimeout(() => {
-      navigate('/claim-history');
-    }, 2000);
+  //handle claim submit form
+  const handleClaimSubmit = async (data) => {
+    setIsSubmitting(true)
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/fileClaim',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+           'Authorization': `${token}`
+        },
+        body:JSON.stringify(data)
+      })
+      const res = await response.json()
+      if(res.status === 'Success'){
+        setIsSubmitting(false)
+        navigate('/claim-history');
+      }else{
+        setIsSubmitting(false)
+        setErrorMessage("Something wrong on server")
+      }
+    } catch (error) {
+      setIsSubmitting(false)
+      setErrorMessage("Something wrong on server")
+    }
   };
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/');
+    }
+  }, [isLoggedIn]);
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
       <div
@@ -30,8 +54,13 @@ const ClaimForm = () => {
         style={{ maxWidth: '500px' }}
       >
         <h2 className="text-center mb-4">File a Claim</h2>
+        {errorMessage && (
+          <div className="alert alert-danger text-center">
+            {errorMessage}
+          </div>
+        )}
         <form onSubmit={handleSubmit(handleClaimSubmit)}>
-          <input type="hidden" {...register('userEmail')} value={userEmail} />
+          <input type="hidden" {...register('user')} value={currentUser._id} />
           <input type="hidden" {...register('policyId')} value={policyId} />
           <input type="hidden" {...register('claimStatus')} value="Pending" />
           {/* Claim Description */}
@@ -54,7 +83,7 @@ const ClaimForm = () => {
 
           {/* Payment of claim */}
           <div className="mb-3">
-            <label htmlFor="incidentDate" className="form-label">
+            <label htmlFor="amount" className="form-label">
               Amount Claim:
             </label>
             <input
@@ -62,10 +91,10 @@ const ClaimForm = () => {
               className="form-control"
               id="claimAmount"
               placeholder="Please Enter Claim Amount"
-              {...register('claimAmount', { required: 'Amount is required' })}
+              {...register('amount', { required: 'Amount is required' })}
             />
-            {errors.claimAmount && (
-              <p className="text-danger">{errors.claimAmount.message}</p>
+            {errors.amount && (
+              <p className="text-danger">{errors.amount.message}</p>
             )}
           </div>
 
@@ -78,44 +107,12 @@ const ClaimForm = () => {
               type="date"
               className="form-control"
               id="incidentDate"
-              {...register('incidentDate', {
+              {...register('dateOfIncident', {
                 required: 'Date of incident is required',
               })}
             />
-            {errors.incidentDate && (
-              <p className="text-danger">{errors.incidentDate.message}</p>
-            )}
-          </div>
-
-          {/* Attach Supporting Documents */}
-          {/* <div className="mb-3">
-            <label htmlFor="supportingDocuments" className="form-label">
-              Attach Supporting Documents:
-            </label>
-            <input
-              type="file"
-              className="form-control"
-              id="document"
-              {...register('document', { required: "Please attach documents" })}
-            />
-            {errors.document && <p className="text-danger">{errors.document.message}</p>}
-          </div> */}
-
-          {/* Terms & Conditions */}
-          <div className="form-check mb-3">
-            <input
-              type="checkbox"
-              className="form-check-input"
-              id="termsAccepted"
-              {...register('termsAccepted', {
-                required: 'You must accept the terms and conditions',
-              })}
-            />
-            <label className="form-check-label" htmlFor="termsAccepted">
-              I accept the terms and conditions
-            </label>
-            {errors.termsAccepted && (
-              <p className="text-danger">{errors.termsAccepted.message}</p>
+            {errors.dateOfIncident && (
+              <p className="text-danger">{errors.dateOfIncident.message}</p>
             )}
           </div>
 

@@ -94,6 +94,10 @@ const Header = () => {
                   className="dropdown-menu mr-5"
                   aria-labelledby="navbarDropdown"
                 >
+
+{user.currentUser?.role === 'user' && (
+          <>
+          
                   <li>
                     <Link to="/profile" className="dropdown-item">
                       My Profile
@@ -105,6 +109,26 @@ const Header = () => {
                       Claim History
                     </Link>
                   </li>
+                  </>
+
+)}
+              {user.currentUser?.role === 'admin' && (
+                <>
+                 <li>
+                    <Link to="/viewclaims" className="dropdown-item">
+                     All Claims
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link to={'/viewpolicies'} className="dropdown-item">
+                      Policy Purchase History
+                    </Link>
+                  </li>
+                </>
+              )}
+                 
+
                   <li>
                     <Link className="dropdown-item" onClick={handleLogout}>
                       Logout

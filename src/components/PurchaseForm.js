@@ -1,39 +1,50 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { purchasePolicy } from '../reducer/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 const PurchaseForm = () => {
-  const { formState, currentUser } = useSelector((state) => state.user);
+  const { formState, currentUser,isLoggedIn } = useSelector((state) => state.user);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm();
   const location = useLocation();
   const { policy } = location.state || {};
   const policyPremium = policy.details.premium;
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   //handle purchase handler
   const handlePurchasePolicy = async (data) => {
-
+    setIsSubmitting(true)
     try {
       const response = await fetch('http://127.0.0.1:8000/api/purchasePolicy',{
         method:'POST',
         headers:{
           'Content-Type':'application/json',
-          // 'Authorization': `${token}`
         },
         body:JSON.stringify(data)
       })
       const res = await response.json()
+      if(res.status === 'Success'){
+        setIsSubmitting(false)
+        setSuccessMessage("Successfully Purchased Policy Thank You")
+        navigate('/profile')
+      }
+
     } catch (error) {
-      
+      setErrorMessage("Something wrong on server")
     }
   
   };
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/');
+    }
+  }, [isLoggedIn]);
   
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
@@ -42,6 +53,17 @@ const PurchaseForm = () => {
         style={{ maxWidth: '500px' }}
       >
         <h2 className="text-center mb-4">Purchase Policy Form</h2>
+        {successMessage && (
+          <div className="alert alert-success text-center">
+            {successMessage}
+          </div>
+        )}
+
+     {errorMessage && (
+          <div className="alert alert-danger text-center">
+            {errorMessage}
+          </div>
+        )}
         <form onSubmit={handleSubmit(handlePurchasePolicy)}>
           {/* Policy Number */}
           <input
@@ -64,8 +86,8 @@ const PurchaseForm = () => {
               type="text"
               className="form-control"
               id="policyNumber"
-              value={policy.policy_id}
-              {...register('policyNumber')}
+              value={policy?.policy_id}
+              {...register('policyId')}
               readOnly
             />
           </div>
@@ -112,7 +134,7 @@ const PurchaseForm = () => {
               type="number"
               className="form-control"
               id="coverageAmount"
-              value={policy.coverage_amount}
+              value={policy?.coverage_amount}
               {...register('covrageAmount')}
               required
             />
@@ -134,7 +156,7 @@ const PurchaseForm = () => {
 
           {/* Submit Button */}
           <button type="submit" className="btn btn-success w-100">
-            {formState === 'Loading' ? 'Processing' : 'Submit Purchase'}
+            {isSubmitting ? 'Processing' : 'Submit Purchase'}
           </button>
         </form>
       </div>

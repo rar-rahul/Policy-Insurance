@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ClaimCard from './ClaimCard';
+import { useNavigate } from 'react-router-dom';
 
 const AdminClaimList = () => {
-    const {token,currentUser} = useSelector((state) => state.user);
+    const {token,currentUser,isLoggedIn} = useSelector((state) => state.user);
     const [updatedClaim,setUpdatedClaim] = useState()
+    const navigate = useNavigate()
   const[claims,setClaims] = useState([])
     const getClaims= async () => {
         const response = await fetch('http://127.0.0.1:8000/api/getAllClaims',{
@@ -25,6 +27,13 @@ const AdminClaimList = () => {
       useEffect(() => {
         getClaims()
       },[updatedClaim])
+
+      useEffect(() => {
+        if (!isLoggedIn) {
+          navigate('/');
+        }
+      }, [isLoggedIn]);
+
   return (
     <div>
 
